@@ -1,7 +1,10 @@
 package com.example.BookReview.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -11,6 +14,9 @@ import java.util.List;
 
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
 
     @Id
@@ -24,9 +30,9 @@ public class Book {
     private Date publicationdate;
 
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER) //cascade type wird automatisch mitgespecihert
+    @JsonIgnoreProperties("book")
+    private List<Review> reviewList = new ArrayList<>();
 
 
     public void setId(Long id) {
@@ -71,13 +77,12 @@ public class Book {
 
 
     public List<Review> getReviews() {
-        return reviews;
+        return reviewList;
     }
 
 
     public void addReview(Review review){
-        reviews.add(review);
-        review.setBook(this);
+        reviewList.add(review);
     }
 
     //noch schreiben

@@ -5,6 +5,8 @@ import com.example.BookReview.services.ServiceUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/users")
@@ -21,15 +23,11 @@ public class ControllerUser {
 
 
 
-
-
-
-    /**
     @GetMapping("/{id}")
     public Optional<User> getUser(@PathVariable Long id) {
         return serviceUser.getUserById(id);
     }
-**/
+
     
 
 }

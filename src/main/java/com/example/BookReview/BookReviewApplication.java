@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +34,6 @@ public class BookReviewApplication {
 
 		ConfigurableApplicationContext applicationContext  = SpringApplication.run(BookReviewApplication.class, args);
 
-
 		//calendar
 		Calendar calendar = Calendar.getInstance();
 
@@ -53,6 +53,11 @@ public class BookReviewApplication {
 		Date momoDate = new Date(calendar.getTimeInMillis());
 		momo.setPublicationdate(momoDate);
 
+		//saving
+		RepositoryBook repositoryBook = applicationContext.getBean(RepositoryBook.class);
+		repositoryBook.save(krabat);
+		repositoryBook.save(momo);
+
 		//password encoder
 		PasswordEncoder passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
 
@@ -63,27 +68,34 @@ public class BookReviewApplication {
 		anna.setPassword(passwordEncoder.encode("you_password"));
 		anna.setRole("USER");
 
+		RepositoryUser repositoryUser = applicationContext.getBean(RepositoryUser.class);
+		repositoryUser.save(anna);
+
 		//new review
 
 		Review annasReview01 = new Review();
 		annasReview01.setReviewText("I really loved the book. Momo is an inspiring little girl!");
 		annasReview01.setGrade(3);
 		annasReview01.setUser(anna);
+		annasReview01.setBook(krabat);
+		annasReview01.setTitle("review");
 
-		momo.addReview(annasReview01);
+		Review annasReview02 = new Review();
+		annasReview02.setReviewText("like like like");
+		annasReview02.setGrade(1);
+		annasReview02.setUser(anna);
+		annasReview02.setBook(krabat);
+		annasReview02.setTitle("review");
 
+		// Speichern von Bewertungen
+		//repositoryBook.save(krabat); // da cascade nicht nötig!!
+		//repositoryUser.save(anna);
 
-		//saving
-		RepositoryBook repositoryBook = applicationContext.getBean(RepositoryBook.class);
-		repositoryBook.save(krabat);
-		repositoryBook.save(momo);
-
+		// Überprüfen Sie, ob die Beziehungen korrekt sind und speichern Sie die Bewertungen
+		// Wenn Sie Cascading verwenden, können Sie diesen Schritt je nach Konfiguration überspringen
 		RepositoryReview repositoryReview = applicationContext.getBean(RepositoryReview.class);
 		repositoryReview.save(annasReview01);
-
-		RepositoryUser repositoryUser = applicationContext.getBean(RepositoryUser.class);
-		repositoryUser.save(anna);
-
+		repositoryReview.save(annasReview02);
 
 
 
