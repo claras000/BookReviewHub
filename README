@@ -1,4 +1,18 @@
-Ideen zu Umsetzung:
+## Bookreview
+# Eine Java Spring Webapp für Buchrezensionen
+
+Diese Backend Anwendung nutzt das MVC Model
+und hat eine postgres DB implementiert in denen die Daten persisiert werden.
+
+Für Tests wird hier Mockito genutzt und für die saubere Datenanbindung zur DB
+wird Hilbernate als JPA-Implentierung genutzt.
+Über REST API Schnitstellen in den Contollern kann die Anwendung mit dem Frontend kommunizieren.
+
+## Autorin
+Clara Correa
+
+
+weitere Ideen zu Umsetzung:
 
 Queue: Asynchrone Verarbeitung von Reviews.
 Streams: Berechnung von Durchschnittsbewertungen und Ermittlung der Top-Bücher.
