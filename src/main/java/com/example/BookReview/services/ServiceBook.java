@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -32,7 +31,7 @@ public class ServiceBook {
      * @return booklist
      */
     public Iterable<BookDto> getAllBooks() {
-        return StreamSupport.stream(repositoryBook.findAll().spliterator(), false).map(this::mapToDto).collect(Collectors.toList());
+        return StreamSupport.stream(repositoryBook.findAll().spliterator(), false).map(this::mapToDto).toList();
     }
 
     /**
@@ -46,13 +45,23 @@ public class ServiceBook {
     }
 
     /**
-     * get booklist by author
+     * returns booklist by author
      *
      * @param author input
      * @return booklist
      */
     public List<BookDto> getBooksByAuthor(String author) {
         return repositoryBook.findByAuthor(author).stream().map(this::mapToDto).toList();
+    }
+
+    /**
+     * returns booklist by title
+     *
+     * @param title current title
+     * @return
+     */
+    public List<BookDto> getBooksByName(String title) {
+        return repositoryBook.findByName(title).stream().map(this::mapToDto).toList();
     }
 
 

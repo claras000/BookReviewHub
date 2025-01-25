@@ -60,7 +60,6 @@ class ServiceBookTest {
         Iterable<BookDto> result = classUnderTest.getAllBooks();
 
         //Assert
-        Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(bookDtoList);
     }
 
@@ -73,7 +72,6 @@ class ServiceBookTest {
         Optional<BookDto> result = classUnderTest.getBookById(1L);
 
         //Assert
-        Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(Optional.ofNullable(bookDto));
     }
 
@@ -86,12 +84,23 @@ class ServiceBookTest {
         List<BookDto> result = classUnderTest.getBooksByAuthor(AUTHOR);
 
         //Assert
-        Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(Collections.singletonList(bookDto));
     }
 
     @Test
-    public void createBook_Test() {
+    void getBooksByName_Test() {
+        //Arrange
+        doReturn(Collections.singletonList(book)).when(repositoryBook).findByName(NAME);
+
+        //Act
+        List<BookDto> result = classUnderTest.getBooksByName(NAME);
+
+        //Assert
+        Assertions.assertThat(result).isEqualTo(Collections.singletonList(bookDto));
+    }
+
+    @Test
+    void createBook_Test() {
         //Arrange
         doReturn(bookDate).when(context).getBean("date");
         doReturn(book).when(repositoryBook).save(Mockito.any(Book.class));
@@ -118,7 +127,6 @@ class ServiceBookTest {
         BookDto result = classUnderTest.updateBook(bookDto, 1L);
 
         //Assert
-        Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(newBookDto);
     }
 

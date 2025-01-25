@@ -46,86 +46,98 @@ class ControllerBookTest {
     }
 
     @Test
-    void get_Test() {
+    void getAllBooks_Test() {
         //Arrange
         Iterable<BookDto> bookDtoList = Collections.singletonList(bookDto);
         doReturn(bookDtoList).when(serviceBook).getAllBooks();
         //Act
-        Iterable<BookDto> result = classUnderTest.get();
+        Iterable<BookDto> result = classUnderTest.getAllBooks();
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(bookDtoList);
     }
 
     @Test
-    void getById_Test() {
+    void getBooksById_Test() {
         //Arrange
         Optional<BookDto> optionalBookDto = Optional.ofNullable(bookDto);
         doReturn(optionalBookDto).when(serviceBook).getBookById(1L);
         //Act
-        Optional<BookDto> result = classUnderTest.getById(1L);
+        Optional<BookDto> result = classUnderTest.getBooksById(1L);
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(optionalBookDto);
     }
 
     @Test
-    void getByAuthor_Test() {
+    void getBooksByAuthor_Test() {
         //Arrange
         Iterable<BookDto> bookDtoList = Collections.singletonList(bookDto);
         doReturn(bookDtoList).when(serviceBook).getBooksByAuthor(AUTHOR);
         //Act
-        List<BookDto> result = classUnderTest.getByAuthor(AUTHOR);
+        List<BookDto> result = classUnderTest.getBooksByAuthor(AUTHOR);
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(bookDtoList);
     }
 
     @Test
-    void add_Test() {
+    void getBooksByName_Test() {
+        //Arrange
+        Iterable<BookDto> bookDtoList = Collections.singletonList(bookDto);
+        doReturn(bookDtoList).when(serviceBook).getBooksByName(NAME);
+        //Act
+        List<BookDto> result = classUnderTest.getBooksByName(NAME);
+        //Assert
+        Assertions.assertThat(result).isNotNull();
+        Assertions.assertThat(result).isEqualTo(bookDtoList);
+    }
+
+    @Test
+    void addBook_Test() {
         //Arrange
         ResponseEntity<BookDto> response = new ResponseEntity<>(bookDto, HttpStatus.CREATED);
         doReturn(bookDto).when(serviceBook).createBook(bookDto);
         //Act
-        ResponseEntity<BookDto> result = classUnderTest.add(bookDto);
+        ResponseEntity<BookDto> result = classUnderTest.addBook(bookDto);
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(response);
     }
 
     @Test
-    void delete_Test_exist() {
+    void deleteBook_Test_exist() {
         //Arrange
         ResponseEntity<String> response = new ResponseEntity<>("Book successfully deleted", HttpStatus.OK);
         doReturn(optionalBookDto).when(serviceBook).deleteBook(1L);
         doReturn(true).when(optionalBookDto).isPresent();
         //Act
-        ResponseEntity<String> result = classUnderTest.delete(1L);
+        ResponseEntity<String> result = classUnderTest.deleteBook(1L);
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(response);
     }
 
     @Test
-    void delete_Test_notExist() {
+    void deleteBook_Test_notExist() {
         //Arrange
         ResponseEntity<String> response = new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
         doReturn(optionalBookDto).when(serviceBook).deleteBook(1L);
         doReturn(false).when(optionalBookDto).isPresent();
         //Act
-        ResponseEntity<String> result = classUnderTest.delete(1L);
+        ResponseEntity<String> result = classUnderTest.deleteBook(1L);
         //Assert
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result).isEqualTo(response);
     }
 
     @Test
-    void update_Test() {
+    void updateBook_Test() {
         //Arrange
         ResponseEntity<BookDto> response = new ResponseEntity<>(bookDto, HttpStatus.CREATED);
         doReturn(bookDto).when(serviceBook).updateBook(bookDto, 1L);
         //Act
-        ResponseEntity<BookDto> result = classUnderTest.update(bookDto, 1L);
+        ResponseEntity<BookDto> result = classUnderTest.updateBook(bookDto, 1L);
         //Assert
         Assertions.assertThat(result).isEqualTo(response);
     }

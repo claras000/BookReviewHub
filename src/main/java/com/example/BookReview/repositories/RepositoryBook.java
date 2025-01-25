@@ -7,11 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Repository for Books
+ */
 @Repository
 public interface RepositoryBook extends CrudRepository<Book, Long> {
 
-    Optional<Book> findByName(String name);
+    List<Book> findByName(String name);
 
     Optional<Book> findBookById(Long id);
 

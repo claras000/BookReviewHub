@@ -18,6 +18,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * Login with USER as role
+ * The Login is currently at dev status
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -59,9 +63,6 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user);
     }
-
-
-
 
 
 }

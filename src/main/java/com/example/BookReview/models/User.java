@@ -2,13 +2,18 @@ package com.example.BookReview.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -30,7 +35,7 @@ public class User {
     private List<Review> reviewList = new ArrayList<>();
 
 
-    public void addReview(Review review){
+    public void addReview(Review review) {
         reviewList.add(review);
     }
 
@@ -38,8 +43,12 @@ public class User {
         return reviewList;
     }
 
-    public Long getUser_id() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long user_id) {
+        this.id = user_id;
     }
 
     public String getUsername() {
@@ -56,10 +65,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.id = user_id;
     }
 
     public String getPassword() {

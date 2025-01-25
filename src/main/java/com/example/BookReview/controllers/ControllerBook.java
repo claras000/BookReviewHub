@@ -2,7 +2,6 @@ package com.example.BookReview.controllers;
 
 import com.example.BookReview.dto.BookDto;
 import com.example.BookReview.services.ServiceBook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,19 @@ import java.util.Optional;
 @RequestMapping("/books")
 public class ControllerBook {
 
-    @Autowired
+    final
     ServiceBook serviceBook;
+
+    public ControllerBook(ServiceBook serviceBook) {
+        this.serviceBook = serviceBook;
+    }
 
 
     /**
      * @return all books
      */
     @GetMapping
-    public Iterable<BookDto> get() {
+    public Iterable<BookDto> getAllBooks() {
         return serviceBook.getAllBooks();
     }
 
@@ -35,9 +38,20 @@ public class ControllerBook {
      * @param id input
      * @return Book
      */
-    @GetMapping("/id")
-    public Optional<BookDto> getById(@PathVariable Long id) {
+    @GetMapping("/id/{id}")
+    public Optional<BookDto> getBooksById(@PathVariable Long id) {
         return serviceBook.getBookById(id);
+    }
+
+    /**
+     * get book by title
+     *
+     * @param title Book title
+     * @return bookList
+     */
+    @GetMapping("/name/{title}")
+    public List<BookDto> getBooksByName(@PathVariable String title) {
+        return serviceBook.getBooksByName(title);
     }
 
 
@@ -45,10 +59,10 @@ public class ControllerBook {
      * find books by author
      *
      * @param author name
-     * @return bookslist by author
+     * @return booksList by author
      */
-    @GetMapping("/{author}")
-    public List<BookDto> getByAuthor(@PathVariable String author) {
+    @GetMapping("/author/{author}")
+    public List<BookDto> getBooksByAuthor(@PathVariable String author) {
         return serviceBook.getBooksByAuthor(author);
     }
 
@@ -59,7 +73,7 @@ public class ControllerBook {
      * @return response of saved book
      */
     @PostMapping("/new")
-    public ResponseEntity<BookDto> add(@RequestBody BookDto bookDto) {
+    public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
         BookDto book = serviceBook.createBook(bookDto);
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
@@ -71,7 +85,7 @@ public class ControllerBook {
      * @return response with deleted book
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         Optional<BookDto> isDeleted = serviceBook.deleteBook(id);
         if (isDeleted.isPresent()) {
             return new ResponseEntity<>("Book successfully deleted", HttpStatus.OK);
@@ -83,12 +97,12 @@ public class ControllerBook {
     /**
      * updating book
      *
-     * @param bookDto new Value
-     * @param id      of changing book
-     * @return new book
+     * @param bookDto dataTransferObject book
+     * @param id      current id
+     * @return changed book
      */
     @PostMapping("/update")
-    public ResponseEntity<BookDto> update(@RequestBody BookDto bookDto, @PathVariable Long id) {
+    public ResponseEntity<BookDto> updateBook(@RequestBody BookDto bookDto, @PathVariable Long id) {
         return new ResponseEntity<>(serviceBook.updateBook(bookDto, id), HttpStatus.CREATED);
     }
 

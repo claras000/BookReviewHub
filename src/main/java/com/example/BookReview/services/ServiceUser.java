@@ -1,35 +1,49 @@
 package com.example.BookReview.services;
 
+import com.example.BookReview.dto.UserDto;
 import com.example.BookReview.models.User;
 import com.example.BookReview.repositories.RepositoryUser;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
-
-
+/**
+ * Review Service
+ */
 @Service
-public class ServiceUser{
+public class ServiceUser {
 
     @Autowired
     RepositoryUser repositoryUser;
 
-    public Optional<User> getUserById(Long id){
-        return repositoryUser.findById(id);
+    /**
+     * getting all users
+     *
+     * @return users
+     */
+    public Iterable<UserDto> getAllUsers() {
+        return StreamSupport.stream(repositoryUser.findAll().spliterator(), false).map(this::mapToDto).toList();
     }
 
-    public Optional<User> getUserByEmail(String email){
-       return repositoryUser.findByEmail(email);
+    /**
+     * getting User by id
+     *
+     * @param id current id
+     * @return current users
+     */
+    public Optional<UserDto> getUserById(Long id) {
+        return repositoryUser.findUserById(id).map(this::mapToDto);
     }
 
-    public Iterable<User> getAllUsers(){
-        return repositoryUser.findAll();
-    }
-
-
-    public void save(User user) {
-        repositoryUser.save(user);
+    /**
+     * transform inout to DataTransferObject
+     *
+     * @param user inputs
+     * @return UserDto
+     */
+    private UserDto mapToDto(User user) {
+        return new UserDto(user.getId(), user.getEmail(), user.getUsername(), user.getPassword(), user.getRole());
     }
 }

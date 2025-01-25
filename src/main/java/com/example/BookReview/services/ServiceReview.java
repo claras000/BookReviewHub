@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.StreamSupport;
+
 
 /**
  * Service for the reviews of the books
@@ -26,6 +28,9 @@ public class ServiceReview {
     RepositoryBook repositoryBook;
 
     @Autowired
+    ServiceBook serviceBook;
+
+    @Autowired
     RepositoryUser repositoryUser;
 
     /**
@@ -33,19 +38,18 @@ public class ServiceReview {
      *
      * @return all reviews
      */
-    public Iterable<Review> getAllReviews() {
-        return repositoryReview.findAll();
+    public Iterable<ReviewDto> getAllReviews() {
+        return StreamSupport.stream(repositoryReview.findAll().spliterator(), false).map(this::mapToDto).toList();
     }
+
 
 
     @Transactional
     public ReviewDto addReview(Long book_id, Long user_id, String title, String reviewText, Integer grade) {
         Book book = repositoryBook.findBookById(book_id).orElseThrow(() -> new EntityNotFoundException("no books found with id: " + book_id));
 
-        User user = repositoryUser.findUserById(user_id);
-        if (user == null) {
-            throw new EntityNotFoundException("no user found with id: " + user_id);
-        }
+        User user = repositoryUser.findById(user_id)
+                .orElseThrow(() -> new EntityNotFoundException("No user found with id: " + user_id));
 
         Review review = new Review();
         book.addReview(review);
@@ -65,7 +69,7 @@ public class ServiceReview {
         reviewDto.setGrade(review.getGrade());
         reviewDto.setTitle(review.getTitle());
         reviewDto.setBook_id(review.getBook().getBook_id());
-        reviewDto.setUser_id(review.getUser().getUser_id());
+        reviewDto.setUser_id(review.getUser().getId());
         return reviewDto;
     }
 
