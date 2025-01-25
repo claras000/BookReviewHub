@@ -29,8 +29,8 @@ Clara Correa
 
 ### weitere Ideen zu Umsetzung:
 
-Queue: Asynchrone Verarbeitung von Reviews.
-Streams: Berechnung von Durchschnittsbewertungen und Ermittlung der Top-Bücher.
-Events: Benachrichtigungen oder Logs bei der Erstellung neuer Reviews.
-Cache: Performance-Optimierung durch Spring Cache.
-Scheduler: Automatische Berechnung und Aktualisierung von Statistiken.
+- Queue: Asynchrone Verarbeitung von Reviews.
+- Streams: Berechnung von Durchschnittsbewertungen und Ermittlung der Top-Bücher.
+- Events: Benachrichtigungen oder Logs bei der Erstellung neuer Reviews.
+- Cache: Performance-Optimierung durch Spring Cache.
+- Scheduler: Automatische Berechnung und Aktualisierung von Statistiken.
